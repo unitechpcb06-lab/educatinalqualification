@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>แบบฟอร์มข้อมูลวุฒิการศึกษาพนักงาน | UNITECH PCB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F3F7F5;
+    --card: #FFFFFF;
+    --mint: #9FD8C0;
+    --mint-dark: #4F9E82;
+    --mint-pale: #E4F4EE;
+    --peach: #FFCBA4;
+    --peach-dark: #E8996A;
+    --ink: #2E3A36;
+    --muted: #6B7A75;
+    --line: #DCEDE6;
+    --error: #D9694F;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; }
+  body{
+    margin:0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(159,216,192,0.35), transparent 40%),
+      radial-gradient(circle at 90% 85%, rgba(255,203,164,0.30), transparent 45%);
+    font-family: 'Sarabun', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+    display:flex;
+    justify-content:center;
+    padding: 40px 16px 60px;
+  }
+  .wrap{ width:100%; max-width: 620px; }
+  .brand{
+    display:flex; align-items:center; gap:14px; margin-bottom: 18px;
+  }
+  .brand img{ height: 34px; width:auto; flex-shrink:0; }
+  .brand-text .company{ font-family:'Prompt', sans-serif; font-weight:600; font-size: .92rem; color: var(--mint-dark); letter-spacing:.2px; }
+  .brand-text .sub{ font-size:.85rem; color: var(--muted); }
+
+  .card{
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 18px 40px -22px rgba(79,158,130,0.35);
+    border: 1px solid var(--line);
+  }
+  .hero{
+    position: relative;
+    height: 190px;
+    background: var(--mint-pale);
+  }
+  .hero img{
+    width:100%; height:100%;
+    object-fit: cover;
+    display:block;
+  }
+  .hero-fade{
+    position:absolute; left:0; right:0; bottom:0; height:80px;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #FFFFFF 92%);
+  }
+  #formScreen{ padding: 24px 28px 28px; }
+  h1{
+    font-family:'Prompt', sans-serif;
+    font-weight:600;
+    font-size: 1.5rem;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .lead{
+    color: var(--muted);
+    font-size: .95rem;
+    line-height:1.6;
+    margin: 0 0 26px;
+  }
+  .section-title{
+    font-family:'Prompt', sans-serif;
+    font-weight:600;
+    font-size: .95rem;
+    color: var(--mint-dark);
+    margin: 30px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--mint-pale);
+  }
+  .section-title:first-of-type{ margin-top: 4px; }
+
+  label{
+    display:block;
+    font-size:.92rem;
+    font-weight:600;
+    margin-bottom:6px;
+    color: var(--ink);
+  }
+  label .req{ color: var(--peach-dark); margin-left:2px; }
+  .field{ margin-bottom: 20px; }
+  .hint{ font-size:.8rem; color: var(--muted); margin-top:6px; line-height:1.5; }
+  .err-msg{ font-size:.8rem; color: var(--error); margin-top:6px; display:none; }
+  .field.invalid .err-msg{ display:block; }
+  .field.invalid input, .field.invalid select{ border-color: var(--error); }
+
+  input[type=text], input[type=date], select{
+    width:100%;
+    padding: 12px 14px;
+    font-family:'Sarabun', sans-serif;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: 1.5px solid var(--line);
+    background: #FBFDFC;
+    color: var(--ink);
+    transition: border-color .15s ease, box-shadow .15s ease;
+    -webkit-appearance:none;
+    appearance:none;
+  }
+  select{
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9'><path d='M1 1l6 6 6-6' stroke='%234F9E82' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat:no-repeat;
+    background-position: right 14px center;
+    padding-right: 38px;
+  }
+  input:focus, select:focus{
+    outline:none;
+    border-color: var(--mint-dark);
+    box-shadow: 0 0 0 4px rgba(159,216,192,0.35);
+  }
+  .date-row{ display:flex; gap:12px; }
+  .date-row .date-col{ flex:1; min-width:0; }
+  .date-row label{ font-size:.85rem; }
+  .checkbox-row{
+    display:flex; align-items:center; gap:8px; margin-top:8px;
+  }
+  .checkbox-row input{ width:16px; height:16px; accent-color: var(--mint-dark); }
+  .checkbox-row label{ margin:0; font-weight:400; font-size:.85rem; color: var(--muted); }
+
+  .conditional-block{
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transition: max-height .35s ease, opacity .3s ease;
+  }
+  .conditional-block.open{
+    max-height: 900px;
+    opacity:1;
+  }
+  .note-box{
+    background: var(--mint-pale);
+    border: 1px solid var(--mint);
+    color: var(--mint-dark);
+    font-size:.82rem;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-top: 8px;
+    display:none;
+  }
+  .note-box.show{ display:block; }
+
+  button[type=submit]{
+    width:100%;
+    margin-top: 10px;
+    padding: 15px;
+    border:none;
+    border-radius: 14px;
+    background: var(--mint-dark);
+    color:#fff;
+    font-family:'Prompt', sans-serif;
+    font-weight:600;
+    font-size: 1.02rem;
+    cursor:pointer;
+    transition: background .15s ease, transform .1s ease;
+  }
+  button[type=submit]:hover{ background:#3f8a70; }
+  button[type=submit]:active{ transform: scale(.99); }
+  button[type=submit]:disabled{ background:#B9CFC7; cursor:not-allowed; }
+
+  .status{
+    margin-top:16px;
+    text-align:center;
+    font-size:.9rem;
+    font-weight:600;
+    display:none;
+  }
+  .status.ok{ color: var(--mint-dark); display:block; }
+  .status.fail{ color: var(--error); display:block; }
+
+  .success-screen{ display:none; text-align:center; padding: 30px 28px; }
+  .success-screen.show{ display:block; }
+  .success-screen svg{ margin-bottom: 14px; }
+  .success-screen h2{ font-family:'Prompt', sans-serif; font-size:1.3rem; margin:0 0 8px; color: var(--mint-dark); }
+  .success-screen p{ color: var(--muted); font-size:.92rem; margin: 0 0 20px; }
+  .success-screen button{
+    background: var(--peach-dark); border:none; color:#fff; padding:11px 22px;
+    border-radius:12px; font-family:'Prompt',sans-serif; font-weight:600; cursor:pointer;
+  }
+
+  footer{ text-align:center; margin-top: 22px; font-size:.78rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <img src="assets/logo.png" alt="Unitech" />
+    <div class="brand-text">
+      <div class="company">UNITECH PCB (THAILAND) CO., LTD.</div>
+      <div class="sub">ฝ่ายทรัพยากรบุคคล</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="hero">
+      <img src="assets/building.jpg" alt="อาคารโรงงาน UNITECH PCB (Thailand)" />
+      <div class="hero-fade"></div>
+    </div>
+    <div id="formScreen">
+      <h1>แบบฟอร์มข้อมูลวุฒิการศึกษา</h1>
+      <p class="lead">กรอกข้อมูลวุฒิการศึกษาสูงสุดของท่านให้ครบถ้วน ใช้เวลาไม่ถึง 2 นาที</p>
+
+      <form id="eduForm" novalidate>
+
+        <div class="section-title">ข้อมูลพนักงาน</div>
+
+        <div class="field" id="field-empCode">
+          <label>รหัสพนักงาน <span class="req">*</span></label>
+          <input type="text" id="empCode" name="empCode" inputmode="numeric" maxlength="5" placeholder="กรอกตัวเลข 5 หลัก เช่น 01234" required />
+          <div class="hint">ตัวเลขเท่านั้น 5 หลัก ห้ามมีตัวอักษร</div>
+          <div class="err-msg">กรุณากรอกรหัสพนักงานเป็นตัวเลข 5 หลัก</div>
+        </div>
+
+        <div class="section-title">ข้อมูลการศึกษา</div>
+
+        <div class="field" id="field-school">
+          <label>ชื่อสถานศึกษา <span class="req">*</span></label>
+          <input type="text" id="school" name="school" placeholder="เช่น โรงเรียน..., มหาวิทยาลัย... หรือพิมพ์ กศน. หากเรียน กศน." required />
+          <div class="note-box" id="gsnNote">ระบบตั้งค่าวุฒิการศึกษาเป็น "มัธยมศึกษาตอนปลาย" ให้อัตโนมัติสำหรับ กศน. — สามารถแก้ไขได้หากไม่ตรง</div>
+          <div class="err-msg">กรุณากรอกชื่อสถานศึกษา</div>
+        </div>
+
+        <div class="field" id="field-level">
+          <label>วุฒิการศึกษาสูงสุด <span class="req">*</span></label>
+          <select id="level" name="level" required>
+            <option value="" disabled selected>-- เลือกวุฒิการศึกษา --</option>
+            <option value="ประถมศึกษา">ประถมศึกษา</option>
+            <option value="มัธยมศึกษาตอนต้น">มัธยมศึกษาตอนต้น</option>
+            <option value="มัธยมศึกษาตอนปลาย">มัธยมศึกษาตอนปลาย</option>
+            <option value="ปวช.">ปวช.</option>
+            <option value="ปวส.">ปวส.</option>
+            <option value="ปริญญาตรี">ปริญญาตรี</option>
+            <option value="ปริญญาโท">ปริญญาโท</option>
+            <option value="ปริญญาเอก">ปริญญาเอก</option>
+          </select>
+          <div class="err-msg">กรุณาเลือกวุฒิการศึกษา</div>
+        </div>
+
+        <div class="conditional-block" id="extraBlock">
+          <div class="field" id="field-major">
+            <label>คณะ/สาขา <span class="req">*</span></label>
+            <input type="text" id="major" name="major" placeholder="เช่น ช่างไฟฟ้า, บริหารธุรกิจ, วิศวกรรมคอมพิวเตอร์" />
+            <div class="err-msg">กรุณากรอกคณะ/สาขา</div>
+          </div>
+
+          <div class="field" id="field-startDate">
+            <label>ปี-เดือนที่เข้าศึกษา <span class="req">*</span></label>
+            <div class="date-row">
+              <div class="date-col">
+                <label for="startMonth">เดือน</label>
+                <select id="startMonth" name="startMonth">
+                  <option value="" disabled selected>เดือน</option>
+                  <option value="01">มกราคม</option>
+                  <option value="02">กุมภาพันธ์</option>
+                  <option value="03">มีนาคม</option>
+                  <option value="04">เมษายน</option>
+                  <option value="05">พฤษภาคม</option>
+                  <option value="06">มิถุนายน</option>
+                  <option value="07">กรกฎาคม</option>
+                  <option value="08">สิงหาคม</option>
+                  <option value="09">กันยายน</option>
+                  <option value="10">ตุลาคม</option>
+                  <option value="11">พฤศจิกายน</option>
+                  <option value="12">ธันวาคม</option>
+                </select>
+              </div>
+              <div class="date-col">
+                <label for="startYear">ปี (ค.ศ.)</label>
+                <input type="text" id="startYear" name="startYear" inputmode="numeric" maxlength="4" placeholder="เช่น 2024" />
+              </div>
+            </div>
+            <div class="hint">รูปแบบ ปี/เดือน เช่น 2024/08 — หากจำเดือนไม่ได้ ให้ประมาณการเดือนใกล้เคียงที่สุด</div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="startEstimate" name="startEstimate" />
+              <label for="startEstimate">ปี-เดือนนี้เป็นการประมาณการ (จำแน่นอนไม่ได้)</label>
+            </div>
+            <div class="err-msg">กรุณาระบุปีและเดือนที่เข้าศึกษา (ประมาณการได้)</div>
+          </div>
+
+          <div class="field" id="field-endDate">
+            <label>ปี-เดือนที่จบการศึกษา <span class="req">*</span></label>
+            <div class="date-row">
+              <div class="date-col">
+                <label for="endMonth">เดือน</label>
+                <select id="endMonth" name="endMonth">
+                  <option value="" disabled selected>เดือน</option>
+                  <option value="01">มกราคม</option>
+                  <option value="02">กุมภาพันธ์</option>
+                  <option value="03">มีนาคม</option>
+                  <option value="04">เมษายน</option>
+                  <option value="05">พฤษภาคม</option>
+                  <option value="06">มิถุนายน</option>
+                  <option value="07">กรกฎาคม</option>
+                  <option value="08">สิงหาคม</option>
+                  <option value="09">กันยายน</option>
+                  <option value="10">ตุลาคม</option>
+                  <option value="11">พฤศจิกายน</option>
+                  <option value="12">ธันวาคม</option>
+                </select>
+              </div>
+              <div class="date-col">
+                <label for="endYear">ปี (ค.ศ.)</label>
+                <input type="text" id="endYear" name="endYear" inputmode="numeric" maxlength="4" placeholder="เช่น 2026" />
+              </div>
+            </div>
+            <div class="hint">รูปแบบ ปี/เดือน เช่น 2026/02 — หากจำเดือนไม่ได้ ให้ประมาณการเดือนใกล้เคียงที่สุด</div>
+            <div class="checkbox-row">
+              <input type="checkbox" id="endEstimate" name="endEstimate" />
+              <label for="endEstimate">ปี-เดือนนี้เป็นการประมาณการ (จำแน่นอนไม่ได้)</label>
+            </div>
+            <div class="err-msg">กรุณาระบุปีและเดือนที่จบการศึกษา (ประมาณการได้)</div>
+          </div>
+        </div>
+
+        <button type="submit" id="submitBtn">ส่งข้อมูล</button>
+        <div class="status" id="statusMsg"></div>
+      </form>
+    </div>
+
+    <div class="success-screen" id="successScreen">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+        <circle cx="28" cy="28" r="27" fill="#E4F4EE" stroke="#9FD8C0" stroke-width="2"/>
+        <path d="M17 29l7 7 15-15" stroke="#4F9E82" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h2>ส่งข้อมูลเรียบร้อยแล้ว</h2>
+      <p>ขอบคุณสำหรับข้อมูล ฝ่ายทรัพยากรบุคคลได้รับข้อมูลของท่านแล้ว</p>
+      <button onclick="location.reload()">กรอกข้อมูลอีกครั้ง</button>
+    </div>
+  </div>
+
+  <footer>UNITECH PCB (Thailand) Co., Ltd. — ระบบบันทึกวุฒิการศึกษาพนักงาน</footer>
+</div>
+
+<script>
+  // *** แก้ไข URL นี้เป็น Web App URL ของ Google Apps Script ที่ deploy แล้ว ***
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw5CKa4heTUmWTwv3bRZHAfqTtSyi-fU3bnjspsLo8mZn_LV247-zX7RzV6w29_84B5GA/exec";
+
+  const LEVELS_WITH_EXTRA = ["ปวช.", "ปวส.", "ปริญญาตรี", "ปริญญาโท", "ปริญญาเอก"];
+
+  const form = document.getElementById('eduForm');
+  const empCode = document.getElementById('empCode');
+  const school = document.getElementById('school');
+  const level = document.getElementById('level');
+  const extraBlock = document.getElementById('extraBlock');
+  const major = document.getElementById('major');
+  const startMonth = document.getElementById('startMonth');
+  const startYear = document.getElementById('startYear');
+  const endMonth = document.getElementById('endMonth');
+  const endYear = document.getElementById('endYear');
+  const gsnNote = document.getElementById('gsnNote');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusMsg = document.getElementById('statusMsg');
+
+  let levelManuallyChanged = false;
+  level.addEventListener('change', () => {
+    levelManuallyChanged = true;
+    updateConditional();
+  });
+
+  empCode.addEventListener('input', () => {
+    empCode.value = empCode.value.replace(/[^0-9]/g, '').slice(0, 5);
+  });
+
+  startYear.addEventListener('input', () => {
+    startYear.value = startYear.value.replace(/[^0-9]/g, '').slice(0, 4);
+  });
+  endYear.addEventListener('input', () => {
+    endYear.value = endYear.value.replace(/[^0-9]/g, '').slice(0, 4);
+  });
+
+  school.addEventListener('input', () => {
+    const val = school.value.trim();
+    const isGSN = val.includes('กศน');
+    gsnNote.classList.toggle('show', isGSN);
+    if (isGSN && !levelManuallyChanged) {
+      level.value = 'มัธยมศึกษาตอนปลาย';
+      updateConditional();
+    }
+  });
+
+  // รวมปีและเดือนเป็นรูปแบบ "YYYY/MM"
+  function joinYearMonth(year, month){
+    if (!year || !month) return '';
+    return year + '/' + month;
+  }
+
+  function updateConditional(){
+    const needsExtra = LEVELS_WITH_EXTRA.includes(level.value);
+    extraBlock.classList.toggle('open', needsExtra);
+    major.required = needsExtra;
+    startMonth.required = needsExtra;
+    startYear.required = needsExtra;
+    endMonth.required = needsExtra;
+    endYear.required = needsExtra;
+  }
+
+  function setInvalid(fieldId, invalid){
+    document.getElementById(fieldId).classList.toggle('invalid', invalid);
+  }
+
+  function validate(){
+    let ok = true;
+
+    const codeValid = /^[0-9]{5}$/.test(empCode.value);
+    setInvalid('field-empCode', !codeValid);
+    if (!codeValid) ok = false;
+
+    const schoolValid = school.value.trim().length > 0;
+    setInvalid('field-school', !schoolValid);
+    if (!schoolValid) ok = false;
+
+    const levelValid = level.value.length > 0;
+    setInvalid('field-level', !levelValid);
+    if (!levelValid) ok = false;
+
+    if (LEVELS_WITH_EXTRA.includes(level.value)) {
+      const majorValid = major.value.trim().length > 0;
+      setInvalid('field-major', !majorValid);
+      if (!majorValid) ok = false;
+
+      const startValid = startMonth.value.length > 0 && /^[0-9]{4}$/.test(startYear.value);
+      setInvalid('field-startDate', !startValid);
+      if (!startValid) ok = false;
+
+      const endValid = endMonth.value.length > 0 && /^[0-9]{4}$/.test(endYear.value);
+      setInvalid('field-endDate', !endValid);
+      if (!endValid) ok = false;
+    }
+
+    return ok;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusMsg.className = 'status';
+    statusMsg.textContent = '';
+
+    if (!validate()) {
+      statusMsg.className = 'status fail';
+      statusMsg.textContent = 'กรุณาตรวจสอบข้อมูลที่ยังไม่ครบถ้วน';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'กำลังส่งข้อมูล...';
+
+    const fd = new FormData();
+    fd.append('empCode', empCode.value);
+    fd.append('school', school.value.trim());
+    fd.append('level', level.value);
+    fd.append('major', LEVELS_WITH_EXTRA.includes(level.value) ? major.value.trim() : '');
+    fd.append('startDate', LEVELS_WITH_EXTRA.includes(level.value) ? joinYearMonth(startYear.value, startMonth.value) : '');
+    fd.append('startEstimate', document.getElementById('startEstimate').checked ? 'ใช่' : '');
+    fd.append('endDate', LEVELS_WITH_EXTRA.includes(level.value) ? joinYearMonth(endYear.value, endMonth.value) : '');
+    fd.append('endEstimate', document.getElementById('endEstimate').checked ? 'ใช่' : '');
+
+    try {
+      await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: fd });
+      document.getElementById('formScreen').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+    } catch (err) {
+      statusMsg.className = 'status fail';
+      statusMsg.textContent = 'ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'ส่งข้อมูล';
+    }
+  });
+</script>
+</body>
+</html>
