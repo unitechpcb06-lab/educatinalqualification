@@ -231,6 +231,15 @@
           <div class="err-msg">กรุณากรอกรหัสพนักงานเป็นตัวเลข 5 หลัก</div>
         </div>
 
+        <div class="note-box" id="exemptNote">รหัสพนักงานนี้ไม่ต้องกรอกแบบฟอร์มนี้ — ระบบมีข้อมูลของท่านอยู่แล้ว</div>
+
+        <div id="restOfForm">
+        <div class="field" id="field-empName">
+          <label>ชื่อ-นามสกุล (ภาษาไทย) <span class="req">*</span></label>
+          <input type="text" id="empName" name="empName" placeholder="เช่น สมชาย ใจดี" required />
+          <div class="err-msg">กรุณากรอกชื่อ-นามสกุลภาษาไทย</div>
+        </div>
+
         <div class="section-title">ข้อมูลการศึกษา</div>
 
         <div class="field" id="field-school">
@@ -262,78 +271,79 @@
             <input type="text" id="major" name="major" placeholder="เช่น ช่างไฟฟ้า, บริหารธุรกิจ, วิศวกรรมคอมพิวเตอร์" />
             <div class="err-msg">กรุณากรอกคณะ/สาขา</div>
           </div>
+        </div>
 
-          <div class="field" id="field-startDate">
-            <label>ปี-เดือนที่เข้าศึกษา <span class="req">*</span></label>
-            <div class="date-row">
-              <div class="date-col">
-                <label for="startMonth">เดือน</label>
-                <select id="startMonth" name="startMonth">
-                  <option value="" disabled selected>เดือน</option>
-                  <option value="01">มกราคม</option>
-                  <option value="02">กุมภาพันธ์</option>
-                  <option value="03">มีนาคม</option>
-                  <option value="04">เมษายน</option>
-                  <option value="05">พฤษภาคม</option>
-                  <option value="06">มิถุนายน</option>
-                  <option value="07">กรกฎาคม</option>
-                  <option value="08">สิงหาคม</option>
-                  <option value="09">กันยายน</option>
-                  <option value="10">ตุลาคม</option>
-                  <option value="11">พฤศจิกายน</option>
-                  <option value="12">ธันวาคม</option>
-                </select>
-              </div>
-              <div class="date-col">
-                <label for="startYear">ปี (ค.ศ.)</label>
-                <input type="text" id="startYear" name="startYear" inputmode="numeric" maxlength="4" placeholder="เช่น 2024" />
-              </div>
+        <div class="field" id="field-startDate">
+          <label>ปี-เดือนที่เข้าศึกษา <span class="req">*</span></label>
+          <div class="date-row">
+            <div class="date-col">
+              <label for="startMonth">เดือน</label>
+              <select id="startMonth" name="startMonth" required>
+                <option value="" disabled selected>เดือน</option>
+                <option value="01">มกราคม</option>
+                <option value="02">กุมภาพันธ์</option>
+                <option value="03">มีนาคม</option>
+                <option value="04">เมษายน</option>
+                <option value="05">พฤษภาคม</option>
+                <option value="06">มิถุนายน</option>
+                <option value="07">กรกฎาคม</option>
+                <option value="08">สิงหาคม</option>
+                <option value="09">กันยายน</option>
+                <option value="10">ตุลาคม</option>
+                <option value="11">พฤศจิกายน</option>
+                <option value="12">ธันวาคม</option>
+              </select>
             </div>
-            <div class="hint">รูปแบบ ปี/เดือน เช่น 2024/08 — หากจำเดือนไม่ได้ ให้ประมาณการเดือนใกล้เคียงที่สุด</div>
-            <div class="checkbox-row">
-              <input type="checkbox" id="startEstimate" name="startEstimate" />
-              <label for="startEstimate">ปี-เดือนนี้เป็นการประมาณการ (จำแน่นอนไม่ได้)</label>
+            <div class="date-col">
+              <label for="startYear">ปี (ค.ศ.)</label>
+              <input type="text" id="startYear" name="startYear" inputmode="numeric" maxlength="4" placeholder="เช่น 2024" required />
             </div>
-            <div class="err-msg">กรุณาระบุปีและเดือนที่เข้าศึกษา (ประมาณการได้)</div>
           </div>
+          <div class="hint">รูปแบบ ปี/เดือน เช่น 2024/08 — หากจำเดือนไม่ได้ ให้ประมาณการเดือนใกล้เคียงที่สุด</div>
+          <div class="checkbox-row">
+            <input type="checkbox" id="startEstimate" name="startEstimate" />
+            <label for="startEstimate">ปี-เดือนนี้เป็นการประมาณการ (จำแน่นอนไม่ได้)</label>
+          </div>
+          <div class="err-msg">กรุณาระบุปีและเดือนที่เข้าศึกษา (ประมาณการได้)</div>
+        </div>
 
-          <div class="field" id="field-endDate">
-            <label>ปี-เดือนที่จบการศึกษา <span class="req">*</span></label>
-            <div class="date-row">
-              <div class="date-col">
-                <label for="endMonth">เดือน</label>
-                <select id="endMonth" name="endMonth">
-                  <option value="" disabled selected>เดือน</option>
-                  <option value="01">มกราคม</option>
-                  <option value="02">กุมภาพันธ์</option>
-                  <option value="03">มีนาคม</option>
-                  <option value="04">เมษายน</option>
-                  <option value="05">พฤษภาคม</option>
-                  <option value="06">มิถุนายน</option>
-                  <option value="07">กรกฎาคม</option>
-                  <option value="08">สิงหาคม</option>
-                  <option value="09">กันยายน</option>
-                  <option value="10">ตุลาคม</option>
-                  <option value="11">พฤศจิกายน</option>
-                  <option value="12">ธันวาคม</option>
-                </select>
-              </div>
-              <div class="date-col">
-                <label for="endYear">ปี (ค.ศ.)</label>
-                <input type="text" id="endYear" name="endYear" inputmode="numeric" maxlength="4" placeholder="เช่น 2026" />
-              </div>
+        <div class="field" id="field-endDate">
+          <label>ปี-เดือนที่จบการศึกษา <span class="req">*</span></label>
+          <div class="date-row">
+            <div class="date-col">
+              <label for="endMonth">เดือน</label>
+              <select id="endMonth" name="endMonth" required>
+                <option value="" disabled selected>เดือน</option>
+                <option value="01">มกราคม</option>
+                <option value="02">กุมภาพันธ์</option>
+                <option value="03">มีนาคม</option>
+                <option value="04">เมษายน</option>
+                <option value="05">พฤษภาคม</option>
+                <option value="06">มิถุนายน</option>
+                <option value="07">กรกฎาคม</option>
+                <option value="08">สิงหาคม</option>
+                <option value="09">กันยายน</option>
+                <option value="10">ตุลาคม</option>
+                <option value="11">พฤศจิกายน</option>
+                <option value="12">ธันวาคม</option>
+              </select>
             </div>
-            <div class="hint">รูปแบบ ปี/เดือน เช่น 2026/02 — หากจำเดือนไม่ได้ ให้ประมาณการเดือนใกล้เคียงที่สุด</div>
-            <div class="checkbox-row">
-              <input type="checkbox" id="endEstimate" name="endEstimate" />
-              <label for="endEstimate">ปี-เดือนนี้เป็นการประมาณการ (จำแน่นอนไม่ได้)</label>
+            <div class="date-col">
+              <label for="endYear">ปี (ค.ศ.)</label>
+              <input type="text" id="endYear" name="endYear" inputmode="numeric" maxlength="4" placeholder="เช่น 2026" required />
             </div>
-            <div class="err-msg">กรุณาระบุปีและเดือนที่จบการศึกษา (ประมาณการได้)</div>
           </div>
+          <div class="hint">รูปแบบ ปี/เดือน เช่น 2026/02 — หากจำเดือนไม่ได้ ให้ประมาณการเดือนใกล้เคียงที่สุด</div>
+          <div class="checkbox-row">
+            <input type="checkbox" id="endEstimate" name="endEstimate" />
+            <label for="endEstimate">ปี-เดือนนี้เป็นการประมาณการ (จำแน่นอนไม่ได้)</label>
+          </div>
+          <div class="err-msg">กรุณาระบุปีและเดือนที่จบการศึกษา (ประมาณการได้)</div>
         </div>
 
         <button type="submit" id="submitBtn">ส่งข้อมูล</button>
         <div class="status" id="statusMsg"></div>
+        </div>
       </form>
     </div>
 
@@ -357,8 +367,13 @@
 
   const LEVELS_WITH_EXTRA = ["ปวช.", "ปวส.", "ปริญญาตรี", "ปริญญาโท", "ปริญญาเอก"];
 
+  const EXEMPT_THRESHOLD = 26492; // รหัสพนักงานตั้งแต่เลขนี้ขึ้นไป ไม่ต้องกรอกแบบฟอร์มนี้
+
   const form = document.getElementById('eduForm');
   const empCode = document.getElementById('empCode');
+  const empName = document.getElementById('empName');
+  const restOfForm = document.getElementById('restOfForm');
+  const exemptNote = document.getElementById('exemptNote');
   const school = document.getElementById('school');
   const level = document.getElementById('level');
   const extraBlock = document.getElementById('extraBlock');
@@ -379,7 +394,16 @@
 
   empCode.addEventListener('input', () => {
     empCode.value = empCode.value.replace(/[^0-9]/g, '').slice(0, 5);
+    checkExempt();
   });
+
+  function checkExempt(){
+    const isFullCode = /^[0-9]{5}$/.test(empCode.value);
+    const isExempt = isFullCode && parseInt(empCode.value, 10) >= EXEMPT_THRESHOLD;
+    exemptNote.classList.toggle('show', isExempt);
+    restOfForm.style.display = isExempt ? 'none' : '';
+    submitBtn.disabled = isExempt;
+  }
 
   startYear.addEventListener('input', () => {
     startYear.value = startYear.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -408,10 +432,6 @@
     const needsExtra = LEVELS_WITH_EXTRA.includes(level.value);
     extraBlock.classList.toggle('open', needsExtra);
     major.required = needsExtra;
-    startMonth.required = needsExtra;
-    startYear.required = needsExtra;
-    endMonth.required = needsExtra;
-    endYear.required = needsExtra;
   }
 
   function setInvalid(fieldId, invalid){
@@ -425,6 +445,10 @@
     setInvalid('field-empCode', !codeValid);
     if (!codeValid) ok = false;
 
+    const nameValid = empName.value.trim().length > 0;
+    setInvalid('field-empName', !nameValid);
+    if (!nameValid) ok = false;
+
     const schoolValid = school.value.trim().length > 0;
     setInvalid('field-school', !schoolValid);
     if (!schoolValid) ok = false;
@@ -437,15 +461,15 @@
       const majorValid = major.value.trim().length > 0;
       setInvalid('field-major', !majorValid);
       if (!majorValid) ok = false;
-
-      const startValid = startMonth.value.length > 0 && /^[0-9]{4}$/.test(startYear.value);
-      setInvalid('field-startDate', !startValid);
-      if (!startValid) ok = false;
-
-      const endValid = endMonth.value.length > 0 && /^[0-9]{4}$/.test(endYear.value);
-      setInvalid('field-endDate', !endValid);
-      if (!endValid) ok = false;
     }
+
+    const startValid = startMonth.value.length > 0 && /^[0-9]{4}$/.test(startYear.value);
+    setInvalid('field-startDate', !startValid);
+    if (!startValid) ok = false;
+
+    const endValid = endMonth.value.length > 0 && /^[0-9]{4}$/.test(endYear.value);
+    setInvalid('field-endDate', !endValid);
+    if (!endValid) ok = false;
 
     return ok;
   }
@@ -466,12 +490,13 @@
 
     const fd = new FormData();
     fd.append('empCode', empCode.value);
+    fd.append('empName', empName.value.trim());
     fd.append('school', school.value.trim());
     fd.append('level', level.value);
     fd.append('major', LEVELS_WITH_EXTRA.includes(level.value) ? major.value.trim() : '');
-    fd.append('startDate', LEVELS_WITH_EXTRA.includes(level.value) ? joinYearMonth(startYear.value, startMonth.value) : '');
+    fd.append('startDate', joinYearMonth(startYear.value, startMonth.value));
     fd.append('startEstimate', document.getElementById('startEstimate').checked ? 'ใช่' : '');
-    fd.append('endDate', LEVELS_WITH_EXTRA.includes(level.value) ? joinYearMonth(endYear.value, endMonth.value) : '');
+    fd.append('endDate', joinYearMonth(endYear.value, endMonth.value));
     fd.append('endEstimate', document.getElementById('endEstimate').checked ? 'ใช่' : '');
 
     try {
