@@ -231,7 +231,7 @@
           <div class="err-msg">กรุณากรอกรหัสพนักงานเป็นตัวเลข 5 หลัก</div>
         </div>
 
-        <div class="note-box" id="exemptNote">รหัสพนักงานนี้ไม่ต้องกรอกแบบฟอร์มนี้ — ระบบมีข้อมูลของท่านอยู่แล้ว</div>
+        <div class="note-box" id="exemptNote">รหัสพนักงานนี้ต่ำกว่า 26492 — ไม่ต้องกรอกแบบฟอร์มนี้</div>
 
         <div id="restOfForm">
         <div class="field" id="field-empName">
@@ -367,7 +367,7 @@
 
   const LEVELS_WITH_EXTRA = ["ปวช.", "ปวส.", "ปริญญาตรี", "ปริญญาโท", "ปริญญาเอก"];
 
-  const EXEMPT_THRESHOLD = 26492; // รหัสพนักงานตั้งแต่เลขนี้ขึ้นไป ไม่ต้องกรอกแบบฟอร์มนี้
+  const EXEMPT_THRESHOLD = 26492; // รหัสพนักงานต่ำกว่าเลขนี้ ไม่ต้องกรอกแบบฟอร์มนี้
 
   const form = document.getElementById('eduForm');
   const empCode = document.getElementById('empCode');
@@ -399,7 +399,7 @@
 
   function checkExempt(){
     const isFullCode = /^[0-9]{5}$/.test(empCode.value);
-    const isExempt = isFullCode && parseInt(empCode.value, 10) >= EXEMPT_THRESHOLD;
+    const isExempt = isFullCode && parseInt(empCode.value, 10) < EXEMPT_THRESHOLD;
     exemptNote.classList.toggle('show', isExempt);
     restOfForm.style.display = isExempt ? 'none' : '';
     submitBtn.disabled = isExempt;
